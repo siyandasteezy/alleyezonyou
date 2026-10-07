@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element -- product/stylist images are arbitrary URLs set in admin */
+/* eslint-disable @next/next/no-img-element -- product/team images are arbitrary URLs set in admin */
 
 // Shows the real image when one is set, otherwise a labelled block marking where imagery goes.
 export function PlaceholderImage({

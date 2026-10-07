@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PlaceholderImage } from "@/components/placeholder-image";
 import { SectionHeading } from "@/components/service-menu";
 import { getStylists } from "@/lib/catalog";
@@ -24,30 +23,26 @@ export default async function AboutPage() {
               through the door. Replace with the owner&apos;s own words.
             </p>
             <p>
-              A second paragraph on the spa&apos;s approach: healthy hair first, honest advice, and leaving every client
-              feeling like all eyes are on them.
+              A second paragraph on the spa&apos;s approach: beauty intensifi-eye-d, honest advice, and leaving every
+              client feeling like all eyez are on them.
             </p>
           </div>
         </div>
       </section>
 
       <section className="container-x py-16">
-        <SectionHeading eyebrow="The team" title="Meet your stylists" />
+        <SectionHeading eyebrow="The team" title="Meet the team">
+          Book any treatment and we&apos;ll pair you with the right person on the day.
+        </SectionHeading>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {stylists.map((s) => (
             <article key={s.id}>
               <div className="aspect-[4/5] overflow-hidden rounded-[var(--radius)]">
-                <PlaceholderImage src={s.imageUrl} alt={s.name} label="Stylist photo" />
+                <PlaceholderImage src={s.imageUrl} alt={s.name} label="Team photo" />
               </div>
               <h3 className="mt-4 text-2xl font-semibold">{s.name}</h3>
               <p className="text-sm text-accent">{s.role}</p>
               {s.bio && <p className="mt-2 text-sm text-muted">{s.bio}</p>}
-              <Link
-                href={`/book?stylist=${s.id}`}
-                className="mt-3 inline-block text-sm font-semibold underline-offset-4 hover:underline"
-              >
-                Book with {s.name.split(" ")[0]} →
-              </Link>
             </article>
           ))}
         </div>

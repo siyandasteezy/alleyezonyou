@@ -48,7 +48,7 @@ async function ProductDetails({ params }: { params: Promise<{ slug: string }> })
         </div>
         <ul className="mt-8 space-y-2 border-t border-line pt-6 text-sm text-muted">
           <li>Delivery across South Africa, or free in-store pickup.</li>
-          <li>Questions about this product? Ask your stylist at your next visit.</li>
+          <li>Questions about this product? Ask our team at your next visit.</li>
         </ul>
       </div>
     </div>

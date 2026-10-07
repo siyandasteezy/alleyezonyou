@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Slot } from "@/lib/availability";
-import type { Service, Stylist } from "@/lib/catalog";
+import type { Service } from "@/lib/catalog";
 import type { FormState } from "@/lib/customers";
 import { duration, money } from "@/lib/format";
 import { addDays } from "@/lib/time";
@@ -11,22 +11,16 @@ import { createBooking, fetchSlots } from "./actions";
 
 type Props = {
   services: Service[];
-  stylists: Stylist[];
   minDate: string;
   maxDate: string;
 };
 
-const ANY = 0;
-
-export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
+// Clients book with the spa; the booking is assigned to an available team member.
+export function BookingWizard({ services, minDate, maxDate }: Props) {
   const params = useSearchParams();
   const [serviceId, setServiceId] = useState<number | null>(() => {
     const id = Number(params.get("service"));
     return services.some((s) => s.id === id) ? id : null;
-  });
-  const [stylistId, setStylistId] = useState<number | null>(() => {
-    const id = Number(params.get("stylist"));
-    return stylists.some((s) => s.id === id) ? id : null;
   });
   const [date, setDate] = useState(minDate);
   const [time, setTime] = useState<string | null>(null);
@@ -35,19 +29,13 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
   const [state, submit, submitting] = useActionState<FormState, FormData>(createBooking, {});
 
   const service = services.find((s) => s.id === serviceId) ?? null;
-  const eligibleStylists = useMemo(
-    () => (serviceId ? stylists.filter((s) => s.serviceIds.includes(serviceId)) : stylists),
-    [serviceId, stylists],
-  );
-  // A stylist picked from the team page may not offer the chosen service.
-  const stylistValid = stylistId === ANY || eligibleStylists.some((s) => s.id === stylistId);
-  const stylistName = (id: number) => stylists.find((s) => s.id === id)?.name ?? "";
+  const categories = [...new Set(services.map((s) => s.category))];
 
   useEffect(() => {
-    if (!serviceId || stylistId === null || !stylistValid) return;
+    if (!serviceId) return;
     let cancelled = false;
     startLoadingSlots(async () => {
-      const result = await fetchSlots({ serviceId, stylistId: stylistId || null, date });
+      const result = await fetchSlots({ serviceId, date });
       if (!cancelled) {
         setSlots(result);
         setTime(null);
@@ -56,14 +44,14 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [serviceId, stylistId, stylistValid, date]);
+  }, [serviceId, date]);
 
   const days = useMemo(() => {
     const start = weekStart(date, minDate);
     return Array.from({ length: 14 }, (_, i) => addDays(start, i)).filter((d) => d <= maxDate);
   }, [date, minDate, maxDate]);
 
-  const step = !service ? 1 : stylistId === null || !stylistValid ? 2 : !time ? 3 : 4;
+  const step = !service ? 1 : !time ? 2 : 3;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
@@ -77,62 +65,39 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
           onEdit={() => setServiceId(null)}
           summary={service?.name}
         >
-          <div className="grid gap-2 sm:grid-cols-2">
-            {services.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setServiceId(s.id)}
-                className="card p-4 text-left transition hover:border-accent"
-              >
-                <p className="font-medium">{s.name}</p>
-                <p className="mt-1 text-xs text-muted">
-                  {s.category} · {duration(s.durationMins)} · {s.priceFrom && "from "}
-                  {money(s.priceCents)}
-                </p>
-              </button>
+          <div className="space-y-6">
+            {categories.map((category) => (
+              <div key={category}>
+                <p className="eyebrow mb-2">{category}</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {services
+                    .filter((s) => s.category === category)
+                    .map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => setServiceId(s.id)}
+                        className="card p-4 text-left transition hover:border-accent"
+                      >
+                        <p className="font-medium">{s.name}</p>
+                        <p className="mt-1 text-xs text-muted">
+                          {duration(s.durationMins)} · {s.priceFrom && "from "}
+                          {money(s.priceCents)}
+                        </p>
+                      </button>
+                    ))}
+                </div>
+              </div>
             ))}
           </div>
         </Step>
 
-        {/* 2. Stylist */}
+        {/* 2. Date & time */}
         <Step
           n={2}
-          title="Choose your stylist"
+          title="Pick a date & time"
           active={step === 2}
           done={step > 2}
-          onEdit={() => setStylistId(null)}
-          summary={stylistId === ANY ? "Any available stylist" : stylistId ? stylistName(stylistId) : undefined}
-        >
-          <div className="grid gap-2 sm:grid-cols-2">
-            <button
-              type="button"
-              onClick={() => setStylistId(ANY)}
-              className="card p-4 text-left transition hover:border-accent"
-            >
-              <p className="font-medium">Any available stylist</p>
-              <p className="mt-1 text-xs text-muted">Most availability</p>
-            </button>
-            {eligibleStylists.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setStylistId(s.id)}
-                className="card p-4 text-left transition hover:border-accent"
-              >
-                <p className="font-medium">{s.name}</p>
-                <p className="mt-1 text-xs text-muted">{s.role}</p>
-              </button>
-            ))}
-          </div>
-        </Step>
-
-        {/* 3. Date & time */}
-        <Step
-          n={3}
-          title="Pick a date & time"
-          active={step === 3}
-          done={step > 3}
           onEdit={() => setTime(null)}
           summary={time ? `${prettyDate(date)} at ${time}` : undefined}
         >
@@ -195,11 +160,10 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
           </div>
         </Step>
 
-        {/* 4. Details */}
-        <Step n={4} title="Your details" active={step === 4} done={false}>
+        {/* 3. Details */}
+        <Step n={3} title="Your details" active={step === 3} done={false}>
           <form action={submit} className="grid gap-4 sm:grid-cols-2">
             <input type="hidden" name="serviceId" value={serviceId ?? ""} />
-            <input type="hidden" name="stylistId" value={stylistId ?? ""} />
             <input type="hidden" name="date" value={date} />
             <input type="hidden" name="time" value={time ?? ""} />
             <Field label="Full name" name="name" autoComplete="name" errors={state.fieldErrors?.name} />
@@ -221,7 +185,7 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
                 name="notes"
                 rows={3}
                 className="input"
-                placeholder="Hair length, inspiration, allergies…"
+                placeholder="Allergies, sensitivities, areas to focus on…"
               />
             </div>
             {state.error && <p className="text-sm text-danger sm:col-span-2">{state.error}</p>}
@@ -238,10 +202,6 @@ export function BookingWizard({ services, stylists, minDate, maxDate }: Props) {
         <dl className="mt-4 space-y-3 text-sm">
           <Row label="Service" value={service?.name} />
           <Row label="Duration" value={service && duration(service.durationMins)} />
-          <Row
-            label="Stylist"
-            value={stylistId === ANY ? "Any available" : stylistId ? stylistName(stylistId) : undefined}
-          />
           <Row label="When" value={time ? `${prettyDate(date)}, ${time}` : undefined} />
         </dl>
         {service && (

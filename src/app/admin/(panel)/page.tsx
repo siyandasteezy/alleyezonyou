@@ -53,7 +53,7 @@ export default async function AdminHome() {
       </div>
 
       <h2 className="mt-10 mb-3 text-2xl font-semibold">Today&apos;s schedule</h2>
-      <Table head={["Time", "Client", "Service", "Stylist", "Status", ""]} empty="No appointments today.">
+      <Table head={["Time", "Client", "Service", "Assigned to", "Status", ""]} empty="No appointments today.">
         {todays.map((b) => (
           <tr key={b.id}>
             <Td className="font-medium whitespace-nowrap">

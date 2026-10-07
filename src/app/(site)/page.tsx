@@ -15,7 +15,7 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="container-x grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
         <div>
-          <p className="eyebrow mb-4">Beauty · Hair · Confidence</p>
+          <p className="eyebrow mb-4">Lashes · Brows · Massages</p>
           <h1 className="text-5xl leading-[1.05] font-semibold sm:text-6xl lg:text-7xl">{site.name}</h1>
           <p className="mt-6 max-w-md text-lg text-muted">{site.tagline}</p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -35,7 +35,8 @@ export default async function HomePage() {
       {/* Services overview */}
       <section className="container-x py-16">
         <SectionHeading eyebrow="Services" title="What we do">
-          From silk presses to knotless braids — pick a service, choose your stylist and book a time that suits you.
+          From lashes and brows to full-body massages — pick a treatment and a time that suits you, and our team will
+          take care of the rest.
         </SectionHeading>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((s) => (

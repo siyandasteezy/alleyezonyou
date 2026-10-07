@@ -45,7 +45,7 @@ export async function setBookingStatus(id: number, status: BookingStatus) {
   await requireAdmin();
   const booking = await db.query.bookings.findFirst({
     where: eq(schema.bookings.id, id),
-    with: { customer: true, service: true, stylist: true },
+    with: { customer: true, service: true },
   });
   if (!booking || !BOOKING_TRANSITIONS[booking.status].includes(status)) return;
 
@@ -56,7 +56,7 @@ export async function setBookingStatus(id: number, status: BookingStatus) {
     await sendEmail({
       to: booking.customer.email,
       subject: `Confirmed: ${booking.service.name}, ${when}`,
-      text: `Hi ${booking.customer.name},\n\nYour appointment is confirmed.\n\n${booking.service.name} with ${booking.stylist.name}\n${when}\nReference: ${booking.reference}\n\nSee you soon!\n${site.name}`,
+      text: `Hi ${booking.customer.name},\n\nYour appointment is confirmed.\n\n${booking.service.name}\n${when}\nReference: ${booking.reference}\n\nSee you soon!\n${site.name}`,
     });
   } else if (status === "cancelled") {
     await sendEmail({
@@ -105,18 +105,21 @@ export async function rescheduleBooking(_prev: FormState, formData: FormData): P
   });
   if (!ok) {
     return {
-      error: "That stylist isn't available then. Pick another time, or tick “ignore availability” to force it.",
+      error: "That team member isn't available then. Pick another time, or tick “ignore availability” to force it.",
     };
   }
 
-  const stylist = await db.query.stylists.findFirst({ where: eq(schema.stylists.id, stylistId) });
-  await sendEmail({
-    to: booking.customer.email,
-    subject: `Rescheduled: ${booking.service.name}, ${formatDateTime(startsAt)}`,
-    text: `Hi ${booking.customer.name},\n\nYour appointment has moved to ${formatDateTime(startsAt)} with ${stylist?.name}.\nReference: ${booking.reference}\n\nIf this doesn't suit you, WhatsApp us on ${site.phone}.\n\n${site.name}`,
-  });
+  // Only the time matters to the client; reassigning a team member is internal.
+  const moved = startsAt.getTime() !== booking.startsAt.getTime();
+  if (moved) {
+    await sendEmail({
+      to: booking.customer.email,
+      subject: `Rescheduled: ${booking.service.name}, ${formatDateTime(startsAt)}`,
+      text: `Hi ${booking.customer.name},\n\nYour appointment has moved to ${formatDateTime(startsAt)}.\nReference: ${booking.reference}\n\nIf this doesn't suit you, WhatsApp us on ${site.phone}.\n\n${site.name}`,
+    });
+  }
   revalidatePath("/admin", "layout");
-  redirect(`/admin/bookings/${id}?saved=1`);
+  redirect(`/admin/bookings/${id}?saved=${moved ? "moved" : "1"}`);
 }
 
 /* ---------- Orders ---------- */
@@ -286,7 +289,7 @@ export async function saveService(_prev: FormState, formData: FormData): Promise
 const stylistSchema = z.object({
   id: z.coerce.number().int().positive().optional(),
   name: z.string().trim().min(2, "Name is required"),
-  role: z.string().trim().default("Stylist"),
+  role: z.string().trim().default("Therapist"),
   bio: z.string().trim().default(""),
   imageUrl: z.string().trim().default(""),
   capacity: z.coerce.number().int().min(1).max(10),

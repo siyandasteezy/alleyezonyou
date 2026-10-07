@@ -34,6 +34,9 @@ export function SiteFooter() {
               <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
             </li>
             <li>
+              <a href={`tel:${site.altPhone.replace(/\s/g, "")}`}>{site.altPhone}</a>
+            </li>
+            <li>
               <a href={`https://wa.me/${site.whatsapp}`}>WhatsApp us</a>
             </li>
             <li>

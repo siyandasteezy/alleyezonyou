@@ -19,7 +19,7 @@ export function RescheduleForm({
       <input type="hidden" name="id" value={id} />
       <div>
         <label className="label" htmlFor="stylistId">
-          Stylist
+          Assigned to
         </label>
         <select id="stylistId" name="stylistId" defaultValue={defaults.stylistId} className="input">
           {stylists.map((s) => (
@@ -48,7 +48,7 @@ export function RescheduleForm({
       </label>
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
       <button className="btn-primary" disabled={pending}>
-        {pending ? "Saving…" : "Save & notify client"}
+        {pending ? "Saving…" : "Save"}
       </button>
     </form>
   );

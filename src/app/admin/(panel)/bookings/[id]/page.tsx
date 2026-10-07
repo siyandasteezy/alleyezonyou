@@ -40,7 +40,7 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
       </PageHeader>
       {sp.saved && (
         <p className="mb-4 rounded-lg bg-success/10 px-4 py-3 text-sm text-success">
-          Booking updated and the client has been emailed.
+          {sp.saved === "moved" ? "Booking moved and the client has been emailed." : "Booking updated."}
         </p>
       )}
 
@@ -49,7 +49,7 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
           <Row label="Status" value={<StatusBadge status={booking.status} />} />
           <Row label="When" value={formatDateTime(booking.startsAt)} />
           <Row label="Service" value={`${booking.service.name} · ${duration(booking.service.durationMins)}`} />
-          <Row label="Stylist" value={booking.stylist.name} />
+          <Row label="Assigned to" value={booking.stylist.name} />
           <Row label="Price" value={money(booking.priceCents)} />
           <Row label="Client" value={booking.customer.name} />
           <Row label="Phone" value={<a href={`tel:${booking.customer.phone}`}>{booking.customer.phone}</a>} />
@@ -60,7 +60,7 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
 
         {editable && (
           <div className="card p-6">
-            <h2 className="mb-4 text-2xl font-semibold">Reschedule</h2>
+            <h2 className="mb-4 text-2xl font-semibold">Reschedule or reassign</h2>
             <RescheduleForm
               id={booking.id}
               stylists={stylists}

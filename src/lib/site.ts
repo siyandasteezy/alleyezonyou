@@ -2,11 +2,11 @@
 export const site = {
   name: "All Eyez On You Beauty Spa",
   shortName: "All Eyez On You",
-  tagline: "Beauty, hair and confidence — all eyez on you.",
-  description:
-    "Book your next beauty or hair appointment online and shop spa-quality products from All Eyez On You Beauty Spa.",
-  phone: "000 000 0000",
-  whatsapp: "27000000000", // international format, no +, used for wa.me links
+  tagline: "Beauty intensifi-eye-d. Lashes, brows and massages — all eyez on you.",
+  description: "Book lashes, brows and massages online and shop spa-quality products from All Eyez On You Beauty Spa.",
+  phone: "079 590 9009",
+  altPhone: "065 367 5871",
+  whatsapp: "27795909009", // international format, no +, used for wa.me links
   email: "hello@alleyezonyou.co.za",
   address: {
     line1: "Street address",
@@ -22,10 +22,15 @@ export const site = {
     { days: "Sunday – Monday", time: "Closed" },
   ],
   social: {
-    instagram: "https://instagram.com/",
-    facebook: "https://facebook.com/",
-    tiktok: "https://tiktok.com/",
+    instagram: "https://www.instagram.com/all_eyez_on_you_spa/",
+    facebook: "https://www.facebook.com/search/top?q=All%20Eyez%20On%20You%20Spa", // TODO: replace with page URL
+    tiktok: "https://www.tiktok.com/@mpho_ditse",
   },
+  // Courses are enquiry-only (not bookable time slots).
+  training: [
+    { name: "Eyelash course", priceCents: 370000 },
+    { name: "5-in-1 course (microblading)", priceCents: 1000000 },
+  ],
   timeZone: "Africa/Johannesburg",
   // Booking rules
   slotIntervalMins: 30,

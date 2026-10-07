@@ -67,7 +67,7 @@ export default async function BookingsPage({ searchParams }: PageProps<"/admin/b
         ]}
       />
 
-      <Table head={["When", "Client", "Service", "Stylist", "Status", ""]} empty="No bookings match these filters.">
+      <Table head={["When", "Client", "Service", "Assigned to", "Status", ""]} empty="No bookings match these filters.">
         {bookings.map((b) => (
           <tr key={b.id}>
             <Td className="whitespace-nowrap">

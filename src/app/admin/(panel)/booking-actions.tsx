@@ -26,7 +26,7 @@ export function BookingActions({
       )}
       {showEdit && (status === "pending" || status === "confirmed") && (
         <Link href={`/admin/bookings/${id}`} className="btn-outline btn-sm">
-          Reschedule
+          Edit
         </Link>
       )}
       {(status === "pending" || status === "confirmed") && (

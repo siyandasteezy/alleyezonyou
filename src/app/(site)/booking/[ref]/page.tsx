@@ -24,7 +24,7 @@ async function BookingDetails({ params }: { params: Promise<{ ref: string }> }) 
   const { ref } = await params;
   const booking = await db.query.bookings.findFirst({
     where: eq(schema.bookings.reference, ref),
-    with: { service: true, stylist: true, customer: true },
+    with: { service: true, customer: true },
   });
   if (!booking) notFound();
 
@@ -51,7 +51,6 @@ async function BookingDetails({ params }: { params: Promise<{ ref: string }> }) 
       <div className="card mt-8 divide-y divide-line">
         <Row label="Status" value={<StatusBadge status={booking.status} />} />
         <Row label="Service" value={`${booking.service.name} (${duration(booking.service.durationMins)})`} />
-        <Row label="Stylist" value={booking.stylist.name} />
         <Row label="Date" value={formatDate(booking.startsAt, { weekday: "long", month: "long" })} />
         <Row label="Time" value={formatTime(booking.startsAt)} />
         <Row label="Price" value={`${booking.service.priceFrom ? "from " : ""}${money(booking.priceCents)}`} />

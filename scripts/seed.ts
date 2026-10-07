@@ -14,63 +14,54 @@ async function main() {
     stylists, services, products, product_categories, customers
     restart identity cascade`);
 
+  // From the spa's price list. Durations are estimates — confirm with the owner.
   const services = await db
     .insert(schema.services)
     .values(
-      [
-        ["Wash & Blow Dry", "Hair", 60, 25000, false, "Shampoo, condition and a smooth blow-out."],
-        ["Silk Press", "Hair", 120, 55000, true, "Deep cleanse, treatment and a glossy silk press."],
-        ["Relaxer & Style", "Hair", 150, 65000, true, "Relaxer application with treatment and style."],
-        ["Cut & Style", "Hair", 60, 35000, false, "Precision cut finished with a style of your choice."],
-        ["Colour", "Hair", 150, 80000, true, "Full colour or highlights. Consultation included."],
-        ["Knotless Braids", "Braids", 300, 90000, true, "Medium knotless braids, mid-back length."],
-        ["Cornrows", "Braids", 120, 40000, true, "Straight-back or freestyle cornrows."],
-        ["Wig Install", "Wigs", 120, 60000, false, "Frontal or closure install with styling."],
-        ["Lash Extensions", "Lashes & Brows", 90, 45000, false, "Classic full set."],
-        ["Brow Shape & Tint", "Lashes & Brows", 30, 15000, false, "Wax, tweeze and tint."],
-      ].map(([name, category, durationMins, priceCents, priceFrom, description], i) => ({
-        name: name as string,
-        slug: slugify(name as string),
-        category: category as string,
-        durationMins: durationMins as number,
-        priceCents: priceCents as number,
-        priceFrom: priceFrom as boolean,
-        description: description as string,
+      (
+        [
+          ["Microblading", "Semi-Permanent Brows", 120, 90000, "Hair-like strokes for natural, fuller brows."],
+          ["Ombré Brows", "Semi-Permanent Brows", 150, 120000, "Soft, powdered brow with a gradient finish."],
+          ["Combination Brow", "Semi-Permanent Brows", 180, 140000, "Microblading strokes blended with ombré shading."],
+          ["Brow Tint & Shape", "Brows", 30, 15000, "Tint and shape to frame your face."],
+          ["Henna Tint", "Brows", 45, 30000, "Longer-lasting henna stain for skin and hair."],
+          ["Brow Lamination", "Brows", 60, 38000, "Lamination with wax and tint for full, brushed-up brows."],
+          ["Classic Lashes", "Lashes", 120, 40000, "One extension per natural lash for a clean, natural look."],
+          ["Hybrid Lashes", "Lashes", 150, 50000, "A mix of classic and volume for texture and fullness."],
+          ["Volume Lashes", "Lashes", 150, 50000, "Handmade fans for a full, fluffy set."],
+          ["Relaxing Back, Neck & Shoulder", "Massages", 30, 20000, "Targeted relief for upper-body tension."],
+          ["Full Body Aromatherapy", "Massages", 60, 40000, "Full-body massage with essential oils."],
+          ["Full Body Hot Stone", "Massages", 75, 45000, "Heated stones to melt away deep tension."],
+          ["Reflexology", "Massages", 45, 25000, "Pressure-point foot therapy."],
+          ["Hand / Foot Massage", "Massages", 30, 10000, "A relaxing hand or foot massage."],
+          ["Full Body Deep Tissue", "Massages", 60, 45000, "Firm pressure for knots and muscle tension."],
+          ["Swedish Massage", "Massages", 60, 30000, "Classic long, flowing strokes to relax the whole body."],
+        ] as const
+      ).map(([name, category, durationMins, priceCents, description], i) => ({
+        name,
+        slug: slugify(name),
+        category,
+        durationMins,
+        priceCents,
+        description,
         sortOrder: i,
       })),
     )
     .returning();
 
+  // Placeholder team: clients book with the spa and are assigned to whoever is free.
   const stylists = await db
     .insert(schema.stylists)
     .values([
-      {
-        name: "Stylist One",
-        role: "Owner & Senior Stylist",
-        bio: "Placeholder bio — colour and silk press specialist.",
-        sortOrder: 0,
-      },
-      {
-        name: "Stylist Two",
-        role: "Braider",
-        bio: "Placeholder bio — braids and protective styles.",
-        capacity: 1,
-        sortOrder: 1,
-      },
-      {
-        name: "Stylist Three",
-        role: "Lash & Brow Artist",
-        bio: "Placeholder bio — lashes, brows and wig installs.",
-        sortOrder: 2,
-      },
+      { name: "Team Member One", role: "Lash & Brow Technician", bio: "Placeholder bio.", sortOrder: 0 },
+      { name: "Team Member Two", role: "Massage Therapist", bio: "Placeholder bio.", sortOrder: 1 },
     ])
     .returning();
 
   const byCategory = (c: string) => services.filter((s) => s.category === c).map((s) => s.id);
   const assignments: [number, number[]][] = [
-    [stylists[0].id, [...byCategory("Hair"), ...byCategory("Wigs")]],
-    [stylists[1].id, [...byCategory("Braids"), ...byCategory("Wigs")]],
-    [stylists[2].id, [...byCategory("Lashes & Brows"), ...byCategory("Wigs")]],
+    [stylists[0].id, [...byCategory("Semi-Permanent Brows"), ...byCategory("Brows"), ...byCategory("Lashes")]],
+    [stylists[1].id, byCategory("Massages")],
   ];
   await db
     .insert(schema.stylistServices)
@@ -89,7 +80,7 @@ async function main() {
   const categories = await db
     .insert(schema.productCategories)
     .values(
-      ["Hair Care", "Styling", "Treatments", "Tools & Accessories"].map((name, i) => ({
+      ["Lash & Brow Care", "Body Care", "Accessories"].map((name, i) => ({
         name,
         slug: slugify(name),
         sortOrder: i,
@@ -98,29 +89,29 @@ async function main() {
     .returning();
   const cat = (name: string) => categories.find((c) => c.name === name)!.id;
 
-  await db.insert(schema.products).values(
-    (
-      [
-        ["Moisture Shampoo 300ml", "Hair Care", 18900, 24],
-        ["Hydrating Conditioner 300ml", "Hair Care", 19900, 18],
-        ["Edge Control", "Styling", 8900, 40],
-        ["Heat Protect Spray", "Styling", 15900, 3],
-        ["Deep Repair Mask", "Treatments", 24900, 12],
-        ["Scalp Growth Oil", "Treatments", 17900, 0],
-        ["Satin Bonnet", "Tools & Accessories", 12900, 30],
-        ["Wide Tooth Comb", "Tools & Accessories", 4900, 50],
-      ] as const
-    ).map(([name, category, priceCents, stock]) => ({
-      name,
-      slug: slugify(name),
-      categoryId: cat(category),
-      priceCents,
-      stock,
-      description: "Placeholder product description. Replace with the real product details.",
-    })),
-  );
+  // Placeholder products — replace with what the spa actually sells.
+  const products = (
+    [
+      ["Lash Growth Serum", "Lash & Brow Care", 29900, 15],
+      ["Lash Extension Cleanser", "Lash & Brow Care", 14900, 20],
+      ["Clear Brow Gel", "Lash & Brow Care", 12900, 3],
+      ["Aromatherapy Massage Oil", "Body Care", 19900, 12],
+      ["Exfoliating Body Scrub", "Body Care", 17900, 0],
+      ["Hydrating Body Butter", "Body Care", 21900, 10],
+      ["Silk Sleep Mask", "Accessories", 14900, 25],
+      ["Lash Spoolie Set", "Accessories", 4900, 50],
+    ] as const
+  ).map(([name, category, priceCents, stock]) => ({
+    name,
+    slug: slugify(name),
+    categoryId: cat(category),
+    priceCents,
+    stock,
+    description: "Placeholder product description. Replace with the real product details.",
+  }));
+  await db.insert(schema.products).values(products);
 
-  console.log(`Seeded ${services.length} services, ${stylists.length} stylists, 8 products.`);
+  console.log(`Seeded ${services.length} services, ${stylists.length} team members, ${products.length} products.`);
   process.exit(0);
 }
 

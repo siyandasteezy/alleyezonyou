@@ -45,6 +45,9 @@ export default function ContactPage() {
               <a className="btn-outline" href={`tel:${site.phone.replace(/\s/g, "")}`}>
                 Call {site.phone}
               </a>
+              <a className="btn-outline" href={`tel:${site.altPhone.replace(/\s/g, "")}`}>
+                Call {site.altPhone}
+              </a>
               <a className="btn-outline" href={`mailto:${site.email}`}>
                 Email
               </a>

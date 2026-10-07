@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { bookableDateRange } from "@/lib/availability";
-import { getServices, getStylists } from "@/lib/catalog";
+import { getServices } from "@/lib/catalog";
 import { BookingWizard } from "./booking-wizard";
 
 export const metadata: Metadata = { title: "Book an appointment" };
@@ -21,7 +21,7 @@ export default function BookPage() {
 
 async function Booking() {
   await connection(); // date range depends on "today"
-  const [services, stylists] = await Promise.all([getServices(), getStylists()]);
+  const services = await getServices();
   const { min, max } = bookableDateRange();
-  return <BookingWizard services={services} stylists={stylists} minDate={min} maxDate={max} />;
+  return <BookingWizard services={services} minDate={min} maxDate={max} />;
 }

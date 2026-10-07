@@ -14,19 +14,18 @@ import { isDateString, isTimeString, toInstant } from "@/lib/time";
 
 const slotQuery = z.object({
   serviceId: z.number().int().positive(),
-  stylistId: z.number().int().positive().nullable(),
   date: z.string().refine(isDateString),
 });
 
+/** Open start times across every team member who offers the service. */
 export async function fetchSlots(input: z.infer<typeof slotQuery>) {
   const parsed = slotQuery.safeParse(input);
   if (!parsed.success) return [];
-  return getSlots(parsed.data);
+  return getSlots({ ...parsed.data, stylistId: null });
 }
 
 const bookingSchema = contactSchema.extend({
   serviceId: z.coerce.number().int().positive(),
-  stylistId: z.coerce.number().int().nonnegative(), // 0 = any stylist
   date: z.string().refine(isDateString, "Pick a date"),
   time: z.string().refine(isTimeString, "Pick a time"),
   notes: z.string().trim().max(500).optional().default(""),
@@ -42,8 +41,9 @@ export async function createBooking(_prev: FormState, formData: FormData): Promi
   });
   if (!service) return { error: "That service is no longer available." };
 
-  // Which stylists could take this slot right now?
-  const slots = await getSlots({ serviceId: service.id, stylistId: input.stylistId || null, date: input.date });
+  // Clients book with the spa; assign the first team member free for this slot.
+  // The owner can reassign it from the admin booking page.
+  const slots = await getSlots({ serviceId: service.id, stylistId: null, date: input.date });
   const candidates = slots.find((s) => s.time === input.time)?.stylistIds ?? [];
 
   const startsAt = toInstant(input.date, input.time);
@@ -86,7 +86,6 @@ export async function createBooking(_prev: FormState, formData: FormData): Promi
   const summary = [
     `Reference: ${created.reference}`,
     `Service: ${service.name}`,
-    `Stylist: ${stylist?.name}`,
     `When: ${when}`,
     `Price: ${service.priceFrom ? "from " : ""}${money(service.priceCents)}`,
   ].join("\n");
@@ -99,7 +98,7 @@ export async function createBooking(_prev: FormState, formData: FormData): Promi
     }),
     notifySalon(
       `New booking: ${service.name}, ${when}`,
-      `${summary}\nClient: ${input.name}, ${input.phone}, ${input.email}\nNotes: ${input.notes || "—"}`,
+      `${summary}\nAssigned to: ${stylist?.name}\nClient: ${input.name}, ${input.phone}, ${input.email}\nNotes: ${input.notes || "—"}`,
     ),
   ]);
 
