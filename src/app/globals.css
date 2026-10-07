@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
+/*
+  Brand tokens. These are placeholders until the look-and-feel guide lands —
+  restyle the whole site by changing the values here.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #faf7f4;
+  --surface: #ffffff;
+  --surface-2: #f2ece6;
+  --ink: #1c1917;
+  --muted: #6b625c;
+  --line: #e6ded6;
+  --accent: #8a5a44;
+  --accent-ink: #ffffff;
+  --accent-soft: #f3e7df;
+  --success: #2f7a4f;
+  --warning: #a8691b;
+  --danger: #b3261e;
+  --radius: 14px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --radius-brand: var(--radius);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-heading), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-accent-ink hover:brightness-110;
+}
+@utility btn-outline {
+  @apply btn border border-line bg-surface text-ink hover:border-ink;
+}
+@utility btn-ghost {
+  @apply btn text-ink hover:bg-surface-2;
+}
+@utility btn-sm {
+  @apply px-3 py-1.5 text-xs;
+}
+@utility card {
+  @apply rounded-[var(--radius)] border border-line bg-surface;
+}
+@utility label {
+  @apply mb-1.5 block text-sm font-medium;
+}
+@utility input {
+  @apply w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20;
+}
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-[0.2em] text-accent uppercase;
 }
