@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     // Unsplash resizes on its own CDN; other URLs are served as-is.
     loader: "custom",
     loaderFile: "./src/lib/image-loader.ts",
-    qualities: [75, 85],
   },
   partialPrefetching: true,
   turbopack: {

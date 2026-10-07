@@ -7,9 +7,9 @@ const u = (id: string) => `https://images.unsplash.com/photo-${id}`;
 
 export const photos = {
   hero: {
-    src: u("1614595198554-9e8ef1c50171"),
-    alt: "Woman in profile with eyes closed, glowing skin and long curly hair",
-    position: "42% 35%",
+    src: u("1632765866070-3fadf25d3d5b"),
+    alt: "Woman with glowing skin and a natural afro",
+    position: "50% 30%",
   },
   heroDetail: { src: u("1683719312734-e31de63957ab"), alt: "Close-up of full, fluffy lash extensions" },
   lashes: { src: u("1683719312734-e31de63957ab"), alt: "Close-up of volume lash extensions" },

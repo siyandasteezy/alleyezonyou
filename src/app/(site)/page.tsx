@@ -253,38 +253,19 @@ export default async function HomePage() {
 
 function Hero({ categories }: { categories: { name: string; from: number }[] }) {
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-108px)] overflow-hidden bg-[#0c0a0d] text-white lg:min-h-[max(640px,calc(100svh-108px))]">
-      {/* Full-bleed photo. Its near-black backdrop matches the section, so on wide screens it's
-          shifted right to leave dark space for the headline without a visible edge. */}
-      <div className="absolute inset-x-0 top-0 -z-10 h-[68svh] sm:h-[72svh] lg:inset-y-0 lg:right-0 lg:left-[22%] lg:h-auto">
-        <Image
-          src={photos.hero.src}
-          alt={photos.hero.alt}
-          fill
-          priority
-          quality={85}
-          sizes="(min-width: 1024px) 78vw, 100vw"
-          className="animate-[rise_1.4s_ease-out_both] object-cover"
-          style={{ objectPosition: photos.hero.position }}
-        />
-        {/* blend the photo's left edge into the page on desktop */}
-        <div className="absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-[#0c0a0d] to-transparent lg:block" />
-        {/* fade the photo into the text below it on phones and tablets */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0c0a0d] to-transparent lg:hidden" />
-      </div>
-      {/* readability: darker at the bottom on phones, on the left on desktop */}
-      <div className="absolute inset-0 -z-10 hidden bg-gradient-to-r from-[#0c0a0d] via-[#0c0a0d]/40 to-transparent lg:block" />
-      <div className="pointer-events-none absolute -bottom-40 -left-40 -z-10 h-[520px] w-[520px] rounded-full bg-accent/25 blur-[130px]" />
+    <section className="relative overflow-hidden bg-night text-white">
+      <div className="pointer-events-none absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-accent/30 blur-[120px]" />
+      <div className="pointer-events-none absolute right-0 bottom-0 h-[420px] w-[420px] rounded-full bg-gold/15 blur-[120px]" />
 
-      <div className="container-x flex w-full flex-col justify-end pt-[42svh] pb-12 sm:pt-[52svh] lg:justify-center lg:py-24">
-        <div className="max-w-xl animate-rise">
+      <div className="container-x relative grid items-center gap-16 pt-14 pb-24 lg:grid-cols-[1.15fr_1fr] lg:pt-20 lg:pb-28">
+        <div className="animate-rise">
           <p className="eyebrow mb-6 !text-gold">Lashes · Brows · Massages</p>
-          <h1 className="text-[clamp(2.6rem,8.6vw,5.2rem)] leading-[1.02] drop-shadow-[0_2px_24px_rgba(0,0,0,0.5)]">
+          <h1 className="text-[clamp(2.5rem,8.6vw,4.9rem)] leading-[1.02]">
             Beauty,
             <br />
             <em className="whitespace-nowrap text-blush">intensifi-eye-d.</em>
           </h1>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mt-7 max-w-md text-base leading-relaxed text-white/70 sm:text-lg">
             Lash extensions, semi-permanent brows and full-body massages, all under one roof. Book online in under a
             minute.
           </p>
@@ -296,20 +277,48 @@ function Hero({ categories }: { categories: { name: string; from: number }[] }) 
               View price list
             </Link>
           </div>
+          <dl className="mt-12 grid max-w-xl grid-cols-2 gap-x-6 gap-y-5 border-t border-white/10 pt-8 sm:grid-cols-4">
+            {categories.map((c) => (
+              <div key={c.name}>
+                <dt className="text-[10px] tracking-[0.2em] text-white/50 uppercase">
+                  {c.name.replace("Semi-Permanent", "Semi-perm")}
+                </dt>
+                <dd className="mt-1 font-display text-2xl">
+                  <span className="font-sans text-[11px] text-white/50">from </span>
+                  {rands(c.from)}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="mt-16 hidden max-w-xl grid-cols-4 gap-x-6 border-t border-white/15 pt-7 sm:grid">
-          {categories.map((c) => (
-            <div key={c.name}>
-              <dt className="text-[10px] tracking-[0.2em] text-white/55 uppercase">
-                {c.name.replace("Semi-Permanent", "Semi-perm")}
-              </dt>
-              <dd className="mt-1 font-display text-2xl">
-                <span className="font-sans text-[11px] text-white/55">from </span>
-                {rands(c.from)}
-              </dd>
+
+        <div className="relative mx-auto w-full max-w-[440px] animate-rise [animation-delay:150ms]">
+          <div className="relative aspect-[4/5] rounded-t-full rounded-b-[var(--radius)] border border-gold/40 p-2">
+            <div className="relative h-full w-full overflow-hidden rounded-t-full rounded-b-[calc(var(--radius)-6px)]">
+              <Image
+                src={photos.hero.src}
+                alt={photos.hero.alt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 440px, 90vw"
+                className="object-cover"
+                style={{ objectPosition: photos.hero.position }}
+              />
             </div>
-          ))}
-        </dl>
+          </div>
+          <div className="absolute -bottom-8 -left-2 h-36 w-36 overflow-hidden rounded-full border-4 border-night shadow-2xl sm:-left-12 sm:h-44 sm:w-44">
+            <Image
+              src={photos.heroDetail.src}
+              alt={photos.heroDetail.alt}
+              fill
+              sizes="180px"
+              className="object-cover"
+            />
+          </div>
+          <div className="absolute top-12 -right-1 rounded-full bg-gold px-4 py-2 text-[10px] font-semibold tracking-[0.2em] text-night uppercase shadow-xl sm:-right-6">
+            Book online 24/7
+          </div>
+        </div>
       </div>
     </section>
   );
