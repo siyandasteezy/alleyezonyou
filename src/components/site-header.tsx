@@ -57,7 +57,7 @@ export function SiteHeader() {
             </Link>
             <button
               type="button"
-              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/10 md:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/10 lg:hidden"
               aria-expanded={open}
               aria-label="Menu"
               onClick={() => setOpen((o) => !o)}
@@ -70,7 +70,7 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <nav className="border-t border-white/10 md:hidden">
+          <nav className="border-t border-white/10 lg:hidden">
             <div className="container-x flex flex-col py-3">
               {NAV.map((item) => (
                 <Link
@@ -99,7 +99,7 @@ function CurrentDesktopNav() {
 
 function DesktopNav({ pathname }: { pathname: string }) {
   return (
-    <nav className="hidden items-center gap-8 md:flex">
+    <nav className="hidden items-center gap-8 lg:flex">
       {NAV.map((item) => {
         const active = pathname.startsWith(item.href);
         return (
