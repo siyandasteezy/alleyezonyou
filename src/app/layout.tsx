@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Montserrat, Playfair_Display } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const heading = Cormorant_Garamond({
+const heading = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-const body = DM_Sans({
+const body = Montserrat({
   variable: "--font-body",
   subsets: ["latin"],
 });

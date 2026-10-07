@@ -1,59 +1,91 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { Logo } from "./logo";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line bg-surface-2">
-      <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="bg-night text-white/70">
+      <div className="container-x grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <p className="font-display text-2xl font-semibold">{site.shortName}</p>
-          <p className="mt-2 text-sm text-muted">{site.tagline}</p>
+          <Logo tone="light" />
+          <p className="mt-5 max-w-xs text-sm leading-relaxed">{site.tagline}</p>
+          <Link href="/book" className="btn-primary mt-6">
+            Book a treatment
+          </Link>
         </div>
-        <div className="text-sm">
-          <p className="mb-3 font-semibold">Visit</p>
-          <p className="text-muted">
+        <FooterCol title="Visit">
+          <p>
             {site.address.line1}
             <br />
             {site.address.suburb}, {site.address.city}
           </p>
-        </div>
-        <div className="text-sm">
-          <p className="mb-3 font-semibold">Hours</p>
-          <ul className="space-y-1 text-muted">
+        </FooterCol>
+        <FooterCol title="Hours">
+          <ul className="space-y-1.5">
             {site.hours.map((h) => (
               <li key={h.days}>
-                {h.days}: {h.time}
+                <span className="text-white">{h.days}</span>
+                <br />
+                {h.time}
               </li>
             ))}
           </ul>
-        </div>
-        <div className="text-sm">
-          <p className="mb-3 font-semibold">Get in touch</p>
-          <ul className="space-y-1 text-muted">
+        </FooterCol>
+        <FooterCol title="Get in touch">
+          <ul className="space-y-1.5">
             <li>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+              <a className="hover:text-white" href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                {site.phone}
+              </a>
             </li>
             <li>
-              <a href={`tel:${site.altPhone.replace(/\s/g, "")}`}>{site.altPhone}</a>
+              <a className="hover:text-white" href={`tel:${site.altPhone.replace(/\s/g, "")}`}>
+                {site.altPhone}
+              </a>
             </li>
             <li>
-              <a href={`https://wa.me/${site.whatsapp}`}>WhatsApp us</a>
+              <a className="hover:text-white" href={`https://wa.me/${site.whatsapp}`}>
+                WhatsApp us
+              </a>
             </li>
             <li>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-            </li>
-            <li className="flex gap-3 pt-2">
-              <a href={site.social.instagram}>Instagram</a>
-              <a href={site.social.facebook}>Facebook</a>
-              <a href={site.social.tiktok}>TikTok</a>
+              <a className="hover:text-white" href={`mailto:${site.email}`}>
+                {site.email}
+              </a>
             </li>
           </ul>
+          <div className="mt-5 flex gap-4 text-[11px] font-semibold tracking-[0.2em] uppercase">
+            <a className="hover:text-gold" href={site.social.instagram}>
+              Instagram
+            </a>
+            <a className="hover:text-gold" href={site.social.tiktok}>
+              TikTok
+            </a>
+            <a className="hover:text-gold" href={site.social.facebook}>
+              Facebook
+            </a>
+          </div>
+        </FooterCol>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="container-x flex flex-col gap-2 py-6 text-xs sm:flex-row sm:justify-between">
+          <p>
+            © {site.name} · <span className="italic">Beauty intensifi-eye-d</span>
+          </p>
+          <Link href="/admin" className="hover:text-white">
+            Staff login
+          </Link>
         </div>
       </div>
-      <div className="container-x flex flex-col gap-2 border-t border-line py-6 text-xs text-muted sm:flex-row sm:justify-between">
-        <p>© {site.name}</p>
-        <Link href="/admin">Staff login</Link>
-      </div>
     </footer>
+  );
+}
+
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="text-sm">
+      <p className="mb-4 text-[11px] font-semibold tracking-[0.28em] text-gold uppercase">{title}</p>
+      {children}
+    </div>
   );
 }

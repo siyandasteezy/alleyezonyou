@@ -49,3 +49,16 @@ export function slugify(s: string) {
     .trim()
     .replace(/[\s_-]+/g, "-");
 }
+
+/** Whole-rand price for marketing copy ("R 400"); falls back to cents when needed. */
+export function rands(cents: number) {
+  return cents % 100 === 0 ? money(cents).replace(/[.,]00$/, "") : money(cents);
+}
+
+/** Anchor id for a service category on the price list ("Semi-Permanent Brows" → "semi-permanent-brows"). */
+export function categorySlug(category: string) {
+  return category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}

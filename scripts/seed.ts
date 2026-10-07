@@ -90,23 +90,25 @@ async function main() {
   const cat = (name: string) => categories.find((c) => c.name === name)!.id;
 
   // Placeholder products — replace with what the spa actually sells.
+  const img = (id: string) => [`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`];
   const products = (
     [
-      ["Lash Growth Serum", "Lash & Brow Care", 29900, 15],
-      ["Lash Extension Cleanser", "Lash & Brow Care", 14900, 20],
-      ["Clear Brow Gel", "Lash & Brow Care", 12900, 3],
-      ["Aromatherapy Massage Oil", "Body Care", 19900, 12],
-      ["Exfoliating Body Scrub", "Body Care", 17900, 0],
-      ["Hydrating Body Butter", "Body Care", 21900, 10],
-      ["Silk Sleep Mask", "Accessories", 14900, 25],
-      ["Lash Spoolie Set", "Accessories", 4900, 50],
+      ["Lash Growth Serum", "Lash & Brow Care", 29900, 15, "1710410815589-dd83514104d0"],
+      ["Lash Extension Cleanser", "Lash & Brow Care", 14900, 20, "1713768704571-6aeb0d0e5105"],
+      ["Clear Brow Gel", "Lash & Brow Care", 12900, 3, "1631214540553-ff044a3ff1d4"],
+      ["Aromatherapy Massage Oil", "Body Care", 19900, 12, "1671493235081-5842463637cd"],
+      ["Exfoliating Body Scrub", "Body Care", 17900, 0, "1786359410261-ec7f89743af6"],
+      ["Hydrating Body Butter", "Body Care", 21900, 10, "1762840192336-575fba31d28c"],
+      ["Silk Sleep Mask", "Accessories", 14900, 25, "1745670457825-acdabc30498e"],
+      ["Lash Spoolie Set", "Accessories", 4900, 50, "1758738880203-8968fb4eda82"],
     ] as const
-  ).map(([name, category, priceCents, stock]) => ({
+  ).map(([name, category, priceCents, stock, photo]) => ({
     name,
     slug: slugify(name),
     categoryId: cat(category),
     priceCents,
     stock,
+    images: img(photo),
     description: "Placeholder product description. Replace with the real product details.",
   }));
   await db.insert(schema.products).values(products);

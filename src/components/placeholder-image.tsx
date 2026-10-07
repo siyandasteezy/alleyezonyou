@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- product/team images are arbitrary URLs set in admin */
+import { EyeMark } from "./logo";
 
-// Shows the real image when one is set, otherwise a labelled block marking where imagery goes.
+// Shows the real image when one is set, otherwise a branded blush tile marking where imagery goes.
 export function PlaceholderImage({
   src,
   alt,
@@ -19,9 +20,10 @@ export function PlaceholderImage({
     <div
       role="img"
       aria-label={alt}
-      className={`grid h-full w-full place-items-center bg-gradient-to-br from-accent-soft to-surface-2 text-xs tracking-widest text-muted uppercase ${className}`}
+      className={`flex h-full w-full flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_30%_20%,#fff_0%,var(--blush)_55%,#e7c3cb_100%)] text-ink/60 ${className}`}
     >
-      {label ?? alt}
+      <EyeMark className="h-8 w-10 opacity-60" />
+      {label && <span className="text-[10px] font-semibold tracking-[0.25em] uppercase">{label}</span>}
     </div>
   );
 }
