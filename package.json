@@ -13,6 +13,7 @@
     "db:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@netlify/database": "^1.1.0",
     "drizzle-orm": "^0.45.3",
     "jose": "^6.2.12",
     "next": "16.4.0",
