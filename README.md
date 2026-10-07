@@ -41,7 +41,7 @@ The repo is ready for Netlify (`netlify.toml`); Netlify's Next.js adapter is app
 
 1. **Import the repo** in Netlify: Add new project → Import from Git → this repository. Leave the build settings as detected from `netlify.toml`.
 2. **Add a Postgres database.** Either:
-   - **Netlify DB** (Extensions → Neon): this sets `NETLIFY_DATABASE_URL` for you, or
+   - **Netlify Database** (Data & storage → Database → create): Netlify injects `NETLIFY_DB_URL` into builds and functions automatically, or
    - any hosted Postgres (Neon, Supabase…): set `DATABASE_URL` to its connection string (with `?sslmode=require`).
 3. **Set environment variables** (Project configuration → Environment variables):
    | Variable | Value |
@@ -54,7 +54,7 @@ The repo is ready for Netlify (`netlify.toml`); Netlify's Next.js adapter is app
 4. **Deploy.** Every build runs `npm run db:migrate` first, so schema changes go out automatically. The build also reads the catalogue, so the database must exist before the first deploy.
 5. **Load starting content (once):** from your machine, point at the production database and seed it, then edit everything in `/admin`:
    ```bash
-   DATABASE_URL="<production connection string>" npm run db:seed
+   DATABASE_URL="<connection string from Data & storage → Database>" npm run db:seed
    ```
    Don't run the seed again after launch: it wipes all bookings and orders.
 6. **Domain & SSL:** add the custom domain under Domain management; Netlify issues the SSL certificate automatically.

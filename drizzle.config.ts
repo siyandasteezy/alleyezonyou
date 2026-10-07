@@ -1,11 +1,15 @@
 import { loadEnvConfig } from "@next/env";
 import { defineConfig } from "drizzle-kit";
+import { getDatabaseUrl } from "./src/lib/database-url";
 
 loadEnvConfig(process.cwd());
 
-// Netlify DB (Neon) exposes NETLIFY_DATABASE_URL; anything else uses DATABASE_URL.
-const url = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
-if (!url) throw new Error("Set DATABASE_URL (or NETLIFY_DATABASE_URL) before running migrations.");
+const url = getDatabaseUrl();
+if (!url) {
+  throw new Error(
+    "No database configured. Create one under Data & storage → Database in Netlify, or set DATABASE_URL.",
+  );
+}
 
 export default defineConfig({
   schema: "./src/db/schema.ts",
