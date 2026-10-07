@@ -11,5 +11,7 @@ export default function imageLoader({ src, width, quality }: LoaderArgs) {
     url.searchParams.set("q", String(quality ?? 75));
     return url.toString();
   }
+  // Local files in /public are served as-is; the width param only keeps Next's loader check happy.
+  if (src.startsWith("/")) return `${src}?w=${width}`;
   return src;
 }

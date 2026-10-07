@@ -11,6 +11,8 @@ export const photos = {
     alt: "Woman with glowing skin and a natural afro",
     position: "50% 30%",
   },
+  // Supplied by the client; served from /public.
+  heroBackground: { src: "/images/hero-background.avif", alt: "", position: "30% 40%" },
   heroDetail: { src: u("1683719312734-e31de63957ab"), alt: "Close-up of full, fluffy lash extensions" },
   lashes: { src: u("1683719312734-e31de63957ab"), alt: "Close-up of volume lash extensions" },
   lashApplication: { src: u("1589710751893-f9a6770ad71b"), alt: "Lash technician applying extensions" },

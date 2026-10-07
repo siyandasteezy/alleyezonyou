@@ -257,6 +257,17 @@ export default async function HomePage() {
 function Hero({ categories }: { categories: { name: string; from: number }[] }) {
   return (
     <section className="relative overflow-hidden border-b border-line bg-white text-ink">
+      {/* Background photo layered under everything, washed to white on the left so the copy stays readable. */}
+      <Image
+        src={photos.heroBackground.src}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover opacity-60"
+        style={{ objectPosition: photos.heroBackground.position }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-white/85 to-white/70 lg:bg-gradient-to-r lg:from-white lg:via-white/80 lg:to-white/20" />
       <div className="pointer-events-none absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-blush/80 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 bottom-0 h-[420px] w-[420px] rounded-full bg-gold/15 blur-[120px]" />
 
