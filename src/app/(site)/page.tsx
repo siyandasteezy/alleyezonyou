@@ -41,33 +41,36 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((c, i) => (
+          {categories.map((c) => (
             <Link
               key={c.name}
               href={`/services#${categorySlug(c.name)}`}
-              className={`group relative block overflow-hidden rounded-[var(--radius)] bg-night ${
-                i % 2 ? "lg:mt-12" : ""
-              }`}
+              className="group flex flex-col overflow-hidden rounded-[var(--radius)] border border-line bg-white transition hover:border-accent hover:shadow-xl"
             >
-              <div className="relative aspect-[3/4]">
+              <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
                   src={c.photo.src}
                   alt={c.photo.alt}
                   fill
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover opacity-85 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
+                  className="object-cover transition duration-700 group-hover:scale-105"
                   style={{ objectPosition: c.photo.position }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-night via-night/20 to-transparent" />
               </div>
-              <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                <p className="text-[11px] font-semibold tracking-[0.28em] text-gold uppercase">
-                  {c.count} treatments · from {rands(c.from)}
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-[11px] font-semibold tracking-[0.28em] text-accent uppercase">
+                  {c.count} treatments
                 </p>
-                <h3 className="mt-2 text-3xl">{c.name}</h3>
-                <p className="mt-3 text-xs font-semibold tracking-[0.2em] uppercase opacity-0 transition group-hover:opacity-100">
-                  Explore →
-                </p>
+                <h3 className="mt-2 flex-1 text-2xl leading-tight xl:text-3xl">{c.name}</h3>
+                <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
+                  <span className="font-display text-xl">
+                    <span className="font-sans text-xs text-muted">from </span>
+                    {rands(c.from)}
+                  </span>
+                  <span className="text-xs font-semibold tracking-[0.2em] text-muted uppercase transition group-hover:text-accent">
+                    Explore →
+                  </span>
+                </div>
               </div>
             </Link>
           ))}
@@ -88,8 +91,8 @@ export default async function HomePage() {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute -right-2 -bottom-6 rounded-[var(--radius)] bg-night px-6 py-5 text-white shadow-2xl sm:-right-10">
-                <p className="text-[10px] tracking-[0.25em] text-gold uppercase">Lash sets from</p>
+              <div className="absolute -right-2 -bottom-6 rounded-[var(--radius)] bg-white px-6 py-5 text-ink shadow-2xl sm:-right-10">
+                <p className="text-[10px] tracking-[0.25em] text-accent uppercase">Lash sets from</p>
                 <p className="mt-1 font-display text-4xl">{rands(Math.min(...lashes.map((s) => s.priceCents)))}</p>
               </div>
             </div>
@@ -108,30 +111,30 @@ export default async function HomePage() {
 
       {/* Massage feature */}
       {massages.length > 0 && (
-        <section className="relative overflow-hidden bg-night text-white">
+        <section className="relative overflow-hidden bg-white text-ink">
           <Image
             src={photos.massages.src}
             alt=""
             fill
             sizes="100vw"
-            className="object-cover opacity-40"
+            className="object-cover"
             style={{ objectPosition: "70% 50%" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-night via-night/85 to-night/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/50" />
           <div className="container-x relative grid gap-12 py-24 lg:grid-cols-2">
             <div>
-              <p className="eyebrow mb-4 !text-gold">Body & massage</p>
+              <p className="eyebrow mb-4">Body & massage</p>
               <h2 className="text-4xl leading-tight sm:text-5xl">
-                Unwind. <em className="text-blush">Fully.</em>
+                Unwind. <em className="text-accent">Fully.</em>
               </h2>
-              <p className="mt-5 max-w-md text-white/70">
+              <p className="mt-5 max-w-md text-muted">
                 Hot stones, aromatherapy, deep tissue and reflexology. Leave the week on the table.
               </p>
-              <Link href={`/services#${categorySlug("Massages")}`} className="btn-light mt-8">
+              <Link href={`/services#${categorySlug("Massages")}`} className="btn-primary mt-8">
                 Book a massage
               </Link>
             </div>
-            <PriceList items={massages} tone="light" />
+            <PriceList items={massages} />
           </div>
         </section>
       )}
@@ -215,21 +218,21 @@ export default async function HomePage() {
       )}
 
       {/* Final CTA */}
-      <section className="relative overflow-hidden bg-night text-white">
-        <div className="pointer-events-none absolute -right-40 -bottom-40 h-[480px] w-[480px] rounded-full bg-accent/25 blur-[120px]" />
+      <section className="relative overflow-hidden border-t border-line bg-white text-ink">
+        <div className="pointer-events-none absolute -right-40 -bottom-40 h-[480px] w-[480px] rounded-full bg-blush/80 blur-[120px]" />
         <div className="container-x relative grid items-center gap-12 py-20 md:grid-cols-[1.2fr_1fr]">
           <div>
             <h2 className="text-5xl leading-[1.05] sm:text-7xl">
-              Your moment <em className="text-blush">starts here.</em>
+              Your moment <em className="text-accent">starts here.</em>
             </h2>
-            <p className="mt-6 max-w-md text-white/70">
+            <p className="mt-6 max-w-md text-muted">
               Booking takes under a minute. Choose a treatment and a time, and we&apos;ll take care of the rest.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/book" className="btn-primary">
                 Book now
               </Link>
-              <a href={`https://wa.me/${site.whatsapp}`} className="btn-ghost-light" target="_blank" rel="noreferrer">
+              <a href={`https://wa.me/${site.whatsapp}`} className="btn-outline" target="_blank" rel="noreferrer">
                 WhatsApp us
               </a>
             </div>
@@ -253,19 +256,19 @@ export default async function HomePage() {
 
 function Hero({ categories }: { categories: { name: string; from: number }[] }) {
   return (
-    <section className="relative overflow-hidden bg-night text-white">
-      <div className="pointer-events-none absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-accent/30 blur-[120px]" />
+    <section className="relative overflow-hidden border-b border-line bg-white text-ink">
+      <div className="pointer-events-none absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-blush/80 blur-[120px]" />
       <div className="pointer-events-none absolute right-0 bottom-0 h-[420px] w-[420px] rounded-full bg-gold/15 blur-[120px]" />
 
       <div className="container-x relative grid items-center gap-16 pt-14 pb-24 lg:grid-cols-[1.15fr_1fr] lg:pt-20 lg:pb-28">
         <div className="animate-rise">
-          <p className="eyebrow mb-6 !text-gold">Lashes · Brows · Massages</p>
+          <p className="eyebrow mb-6">Lashes · Brows · Massages</p>
           <h1 className="text-[clamp(2.5rem,8.6vw,4.9rem)] leading-[1.02]">
             Beauty,
             <br />
-            <em className="whitespace-nowrap text-blush">intensifi-eye-d.</em>
+            <em className="whitespace-nowrap text-accent">intensifi-eye-d.</em>
           </h1>
-          <p className="mt-7 max-w-md text-base leading-relaxed text-white/70 sm:text-lg">
+          <p className="mt-7 max-w-md text-base leading-relaxed text-muted sm:text-lg">
             Lash extensions, semi-permanent brows and full-body massages, all under one roof. Book online in under a
             minute.
           </p>
@@ -273,18 +276,18 @@ function Hero({ categories }: { categories: { name: string; from: number }[] }) 
             <Link href="/book" className="btn-primary px-8 py-4">
               Book a treatment
             </Link>
-            <Link href="/services" className="btn-ghost-light px-8 py-4">
+            <Link href="/services" className="btn-outline px-8 py-4">
               View price list
             </Link>
           </div>
-          <dl className="mt-12 grid max-w-xl grid-cols-2 gap-x-6 gap-y-5 border-t border-white/10 pt-8 sm:grid-cols-4">
+          <dl className="mt-12 grid max-w-xl grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-8 sm:grid-cols-4">
             {categories.map((c) => (
               <div key={c.name}>
-                <dt className="text-[10px] tracking-[0.2em] text-white/50 uppercase">
+                <dt className="text-[10px] tracking-[0.2em] text-muted uppercase">
                   {c.name.replace("Semi-Permanent", "Semi-perm")}
                 </dt>
                 <dd className="mt-1 font-display text-2xl">
-                  <span className="font-sans text-[11px] text-white/50">from </span>
+                  <span className="font-sans text-[11px] text-muted">from </span>
                   {rands(c.from)}
                 </dd>
               </div>
@@ -306,7 +309,7 @@ function Hero({ categories }: { categories: { name: string; from: number }[] }) 
               />
             </div>
           </div>
-          <div className="absolute -bottom-8 -left-2 h-36 w-36 overflow-hidden rounded-full border-4 border-night shadow-2xl sm:-left-12 sm:h-44 sm:w-44">
+          <div className="absolute -bottom-8 -left-2 h-36 w-36 overflow-hidden rounded-full border-4 border-white shadow-2xl sm:-left-12 sm:h-44 sm:w-44">
             <Image
               src={photos.heroDetail.src}
               alt={photos.heroDetail.alt}
@@ -315,7 +318,7 @@ function Hero({ categories }: { categories: { name: string; from: number }[] }) 
               className="object-cover"
             />
           </div>
-          <div className="absolute top-12 -right-1 rounded-full bg-gold px-4 py-2 text-[10px] font-semibold tracking-[0.2em] text-night uppercase shadow-xl sm:-right-6">
+          <div className="absolute top-12 -right-1 rounded-full bg-gold px-4 py-2 text-[10px] font-semibold tracking-[0.2em] text-ink uppercase shadow-xl sm:-right-6">
             Book online 24/7
           </div>
         </div>
@@ -328,12 +331,12 @@ function Marquee({ items }: { items: string[] }) {
   if (!items.length) return null;
   const row = [...items, ...items];
   return (
-    <div className="overflow-hidden border-y border-gold/20 bg-night py-4 text-white" aria-hidden="true">
+    <div className="overflow-hidden border-b border-line bg-white py-4 text-ink" aria-hidden="true">
       <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
         {row.map((item, i) => (
-          <span key={i} className="flex items-center gap-10 font-display text-lg text-white/80 italic">
+          <span key={i} className="flex items-center gap-10 font-display text-lg text-ink/80 italic">
             {item}
-            <span className="text-gold not-italic">✦</span>
+            <span className="text-accent not-italic">✦</span>
           </span>
         ))}
       </div>
@@ -382,33 +385,22 @@ function Pillars() {
 
 function PriceList({
   items,
-  tone = "dark",
 }: {
   items: { id: number; name: string; durationMins: number; priceCents: number; priceFrom: boolean }[];
-  tone?: "dark" | "light";
 }) {
-  const light = tone === "light";
   return (
-    <ul
-      className={`mt-8 divide-y border-y ${light ? "divide-white/10 border-white/10" : "divide-ink/10 border-ink/10"}`}
-    >
+    <ul className="mt-8 divide-y divide-ink/10 border-y border-ink/10">
       {items.map((s) => (
         <li key={s.id}>
           <Link href={`/book?service=${s.id}`} className="group flex items-baseline gap-3 py-4">
             <span className="font-display text-lg sm:text-xl">{s.name}</span>
-            <span className={`hidden text-xs sm:inline ${light ? "text-white/50" : "text-muted"}`}>
-              {duration(s.durationMins)}
-            </span>
-            <span className={`flex-1 border-b border-dotted ${light ? "border-white/25" : "border-ink/25"}`} />
+            <span className="hidden text-xs text-muted sm:inline">{duration(s.durationMins)}</span>
+            <span className="flex-1 border-b border-dotted border-ink/25" />
             <span className="font-semibold whitespace-nowrap">
               {s.priceFrom && "from "}
               {rands(s.priceCents)}
             </span>
-            <span
-              className={`hidden text-[10px] font-semibold tracking-[0.2em] uppercase transition group-hover:translate-x-0.5 sm:inline ${
-                light ? "text-gold" : "text-accent"
-              }`}
-            >
+            <span className="hidden text-[10px] font-semibold tracking-[0.2em] text-accent uppercase transition group-hover:translate-x-0.5 sm:inline">
               Book →
             </span>
           </Link>

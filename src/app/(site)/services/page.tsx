@@ -90,18 +90,18 @@ export default async function ServicesPage() {
       </div>
 
       {/* Training */}
-      <section id="training" className="scroll-mt-44 bg-night text-white">
+      <section id="training" className="scroll-mt-44 border-t border-line bg-white text-ink">
         <div className="container-x grid gap-12 py-20 lg:grid-cols-2">
           <div>
-            <p className="eyebrow mb-4 !text-gold">Training academy</p>
+            <p className="eyebrow mb-4">Training academy</p>
             <h2 className="text-4xl sm:text-5xl">
-              Learn <em className="text-blush">the craft.</em>
+              Learn <em className="text-accent">the craft.</em>
             </h2>
-            <p className="mt-5 max-w-md text-white/70">
+            <p className="mt-5 max-w-md text-muted">
               Want to start your own lash or brow business? Message us to find out about the next intake.
             </p>
             <a
-              className="btn-light mt-8"
+              className="btn-primary mt-8"
               href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi, I'd like to know more about your training courses")}`}
               target="_blank"
               rel="noreferrer"
@@ -109,11 +109,11 @@ export default async function ServicesPage() {
               Enquire on WhatsApp
             </a>
           </div>
-          <ul className="divide-y divide-white/10 self-center border-y border-white/10">
+          <ul className="divide-y divide-line self-center border-y border-line">
             {site.training.map((t) => (
               <li key={t.name} className="flex items-baseline gap-4 py-6">
                 <span className="font-display text-2xl">{t.name}</span>
-                <span className="flex-1 border-b border-dotted border-white/25" />
+                <span className="flex-1 border-b border-dotted border-ink/20" />
                 <span className="font-semibold">{rands(t.priceCents)}</span>
               </li>
             ))}

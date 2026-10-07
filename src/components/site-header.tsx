@@ -29,10 +29,10 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="border-b border-white/10 bg-night/95 text-white backdrop-blur">
+      <div className="border-b border-line bg-white/95 text-ink backdrop-blur">
         <div className="container-x flex h-[72px] items-center justify-between gap-4">
           <Link href="/" onClick={() => setOpen(false)} aria-label={`${site.name} home`}>
-            <Logo tone="light" />
+            <Logo />
           </Link>
 
           <Suspense fallback={<DesktopNav pathname="" />}>
@@ -42,12 +42,12 @@ export function SiteHeader() {
           <div className="flex items-center gap-1 sm:gap-3">
             <Link
               href="/cart"
-              className="relative grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/10"
+              className="relative grid h-10 w-10 place-items-center rounded-full transition hover:bg-surface-2"
               aria-label={`Cart, ${count} items`}
             >
               <CartIcon />
               {count > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-gold px-1 text-[11px] font-semibold text-night">
+                <span className="absolute -top-0.5 -right-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-semibold text-white">
                   {count}
                 </span>
               )}
@@ -57,7 +57,7 @@ export function SiteHeader() {
             </Link>
             <button
               type="button"
-              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/10 lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-surface-2 lg:hidden"
               aria-expanded={open}
               aria-label="Menu"
               onClick={() => setOpen((o) => !o)}
@@ -70,13 +70,13 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <nav className="border-t border-white/10 lg:hidden">
+          <nav className="border-t border-line lg:hidden">
             <div className="container-x flex flex-col py-3">
               {NAV.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="border-b border-white/10 py-4 font-display text-2xl"
+                  className="border-b border-line py-4 font-display text-2xl"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
@@ -106,12 +106,12 @@ function DesktopNav({ pathname }: { pathname: string }) {
           <Link
             key={item.href}
             href={item.href}
-            className={`relative py-2 text-xs font-medium tracking-[0.2em] uppercase transition hover:text-blush ${
-              active ? "text-white" : "text-white/70"
+            className={`relative py-2 text-xs font-medium tracking-[0.2em] uppercase transition hover:text-accent ${
+              active ? "text-ink" : "text-muted"
             }`}
           >
             {item.label}
-            {active && <span className="absolute inset-x-0 -bottom-0.5 h-px bg-gold" />}
+            {active && <span className="absolute inset-x-0 -bottom-0.5 h-px bg-accent" />}
           </Link>
         );
       })}

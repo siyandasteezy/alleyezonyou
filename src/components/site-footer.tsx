@@ -4,10 +4,10 @@ import { Logo } from "./logo";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-night text-white/70">
+    <footer className="border-t border-line bg-white text-muted">
       <div className="container-x grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Logo tone="light" />
+          <Logo />
           <p className="mt-5 max-w-xs text-sm leading-relaxed">{site.tagline}</p>
           <Link href="/book" className="btn-primary mt-6">
             Book a treatment
@@ -24,7 +24,7 @@ export function SiteFooter() {
           <ul className="space-y-1.5">
             {site.hours.map((h) => (
               <li key={h.days}>
-                <span className="text-white">{h.days}</span>
+                <span className="text-ink">{h.days}</span>
                 <br />
                 {h.time}
               </li>
@@ -34,45 +34,45 @@ export function SiteFooter() {
         <FooterCol title="Get in touch">
           <ul className="space-y-1.5">
             <li>
-              <a className="hover:text-white" href={`tel:${site.phone.replace(/\s/g, "")}`}>
+              <a className="hover:text-ink" href={`tel:${site.phone.replace(/\s/g, "")}`}>
                 {site.phone}
               </a>
             </li>
             <li>
-              <a className="hover:text-white" href={`tel:${site.altPhone.replace(/\s/g, "")}`}>
+              <a className="hover:text-ink" href={`tel:${site.altPhone.replace(/\s/g, "")}`}>
                 {site.altPhone}
               </a>
             </li>
             <li>
-              <a className="hover:text-white" href={`https://wa.me/${site.whatsapp}`}>
+              <a className="hover:text-ink" href={`https://wa.me/${site.whatsapp}`}>
                 WhatsApp us
               </a>
             </li>
             <li>
-              <a className="hover:text-white" href={`mailto:${site.email}`}>
+              <a className="hover:text-ink" href={`mailto:${site.email}`}>
                 {site.email}
               </a>
             </li>
           </ul>
           <div className="mt-5 flex gap-4 text-[11px] font-semibold tracking-[0.2em] uppercase">
-            <a className="hover:text-gold" href={site.social.instagram}>
+            <a className="hover:text-accent" href={site.social.instagram}>
               Instagram
             </a>
-            <a className="hover:text-gold" href={site.social.tiktok}>
+            <a className="hover:text-accent" href={site.social.tiktok}>
               TikTok
             </a>
-            <a className="hover:text-gold" href={site.social.facebook}>
+            <a className="hover:text-accent" href={site.social.facebook}>
               Facebook
             </a>
           </div>
         </FooterCol>
       </div>
-      <div className="border-t border-white/10">
+      <div className="border-t border-line">
         <div className="container-x flex flex-col gap-2 py-6 text-xs sm:flex-row sm:justify-between">
           <p>
             © {site.name} · <span className="italic">Beauty intensifi-eye-d</span>
           </p>
-          <Link href="/admin" className="hover:text-white">
+          <Link href="/admin" className="hover:text-ink">
             Staff login
           </Link>
         </div>
@@ -84,7 +84,7 @@ export function SiteFooter() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="text-sm">
-      <p className="mb-4 text-[11px] font-semibold tracking-[0.28em] text-gold uppercase">{title}</p>
+      <p className="mb-4 text-[11px] font-semibold tracking-[0.28em] text-accent uppercase">{title}</p>
       {children}
     </div>
   );

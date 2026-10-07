@@ -6,7 +6,11 @@ export function Logo({ tone = "dark", className = "" }: { tone?: "dark" | "light
       <EyeMark className="h-8 w-10 shrink-0" />
       <span className="flex flex-col leading-none">
         <span className="font-sans text-[15px] font-semibold tracking-[0.28em] uppercase">All Eyez On You</span>
-        <span className="mt-1 font-sans text-[9px] font-medium tracking-[0.55em] text-gold uppercase">Beauty Spa</span>
+        <span
+          className={`mt-1 font-sans text-[9px] font-medium tracking-[0.55em] uppercase ${tone === "light" ? "text-gold" : "text-accent"}`}
+        >
+          Beauty Spa
+        </span>
       </span>
     </span>
   );

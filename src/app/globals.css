@@ -118,12 +118,6 @@ h3,
 @utility eyebrow {
   @apply text-[11px] font-semibold tracking-[0.32em] text-accent uppercase;
 }
-@utility btn-light {
-  @apply btn bg-white text-night hover:bg-blush;
-}
-@utility btn-ghost-light {
-  @apply btn border border-white/40 text-white hover:border-white hover:bg-white/10;
-}
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
 }
